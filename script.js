@@ -191,7 +191,7 @@ let currentStudent = "";
 
 // Shuffles the arrays (Fisher yates algorithm)
 const shuffleStudents = (array) => {
-	for (let i = array-length - 1; 1 > 0; i--) {
+	for (let i = array.length - 1; i > 0; i--) {
 		const j = Math.floor(Math.random() * (i + 1));
 		const temp = array[i];
 		array[i] = array[j];
@@ -208,28 +208,29 @@ const removeItemOnce = (array, value) => {
 	return array;
   };
 
-  // function for picking out students for one round. Adds image and four buttons
+  // The function for taking out the students for the round and adds the image on the student and the four buttens
 const getStudent = () => {
 	shuffleStudents(students);
 
-	// picks out 4 students in new array
+	// this will pick out 4 students in a new arrat
 	const chosenStudents = students.slice(0, 4);
 
-	// variable for student on display/correct answer
+	// this is a variable for student on display/ the correct answer
 	currentStudent = students[0];
-	// sets image in html
+	// puts in a image in the HTML file
 	studentEl.src = currentStudent.image;
 
-	// shuffling the four students again for making it harder to figure out a pattern
+	// This will shuffle anathor four students again to make the quiz harder so it wont be as easier to figure out a pattern
 	shuffleStudents(chosenStudents);
 	choiceEl.innerHTML = "";
 
-	// picks out names from students array and saves them in a new array
+	// Making a new array and picking out names from students and saves them in the new one
 	const chosenStudentsName = chosenStudents.map((student) => student.name);
 
-	// place names in buttons
+	// Putting the names in the choice buttons below the image
 	chosenStudentsName.forEach((studentName) => {
 		choiceEl.innerHTML += `<button class="optionBtn btn btn-lg text-light text-center m-2">${studentName}</button>`;
 	});
 };
+// the game will start from here
 getStudent();

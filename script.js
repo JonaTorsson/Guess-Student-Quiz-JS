@@ -180,13 +180,21 @@ const students = [
 	},
   ];
 
+// The variables
 const studentEl = document.querySelector("#imgStudent");
-const choiceEl = document.querySelector("#choiceButton");
-const scoreEl = document.querySelector("#score");
+const choiceEl = document.querySelector(".choiceButton");
+const resultEl = document.querySelector("#result");
 const restartEl = document.querySelector("#restart");
 const highscoreEl = document.querySelector("#highscore");
+const scoreboxEl = document.querySelector(".scorebox"); 
+const scoreEl = document.querySelector(".score");
+const gameQuizEl = document.querySelector(".gameQuiz");
 
 let currentStudent = "";
+let guesses = 0;
+let correctAnswers = 0;
+let givenAnswers = [];
+let highscore = 0;
 
 
 // Shuffles the arrays (Fisher yates algorithm)
@@ -199,7 +207,7 @@ const shuffleStudents = (array) => {
 	}
 };
 
-//Remove students from the array "students" that wont make you guess on the same person twice
+// Remove students from the array "students" that wont make you guess on the same person twice
 const removeItemOnce = (array, value) => {
 	var index = array.indexOf(value);
 	if (index > -1) {
@@ -212,12 +220,12 @@ const removeItemOnce = (array, value) => {
 const getStudent = () => {
 	shuffleStudents(students);
 
-	// this will pick out 4 students in a new arrat
+	// This will pick out 4 students in a new arrat
 	const chosenStudents = students.slice(0, 4);
 
-	// this is a variable for student on display/ the correct answer
+	// This is a variable for student on display/ the correct answer
 	currentStudent = students[0];
-	// puts in a image in the HTML file
+	// Puts in a image in the HTML file
 	studentEl.src = currentStudent.image;
 
 	// This will shuffle anathor four students again to make the quiz harder so it wont be as easier to figure out a pattern
@@ -227,10 +235,95 @@ const getStudent = () => {
 	// Making a new array and picking out names from students and saves them in the new one
 	const chosenStudentsName = chosenStudents.map((student) => student.name);
 
-	// Putting the names in the choice buttons below the image
+	// Placing the students names in buttons
 	chosenStudentsName.forEach((studentName) => {
-		choiceEl.innerHTML += `<button class="optionBtn btn btn-lg text-light text-center m-2">${studentName}</button>`;
+		choiceEl.innerHTML += `<button class="btn btn-lg btn-outline-warning text-center m-2" type="submit">${studentName}</button>`;
 	});
 };
-// the game will start from here
+
+// The game will start from here
 getStudent();
+
+// A function to track the amount CORRECT guesses and making a new array then pushing it in
+const correctChoice = (studentObj) => {
+	// Doing all the stuff that are related to the users' CORRECT choice
+	givenAnswers.push(studentObj);
+	resultEl.innerHTML = `<p class="correct answer">RÄTT SVAR 🎊</p>`;
+	// Adding one score per correct answer
+	correctAnswers++;
+	getStudent();
+};
+
+// A function to track the amount INCORRECT guesses and making a new array then pushing it in
+const incorrectChoice = (studentObj) => {
+	// Doing all the stuff that are related to the users' incorrect choice
+	givenAnswers.push(studentObj);
+	resultEl.innerHTML = `<p class="wrong answer">FEL SVAR 🚨</p>`;
+	getStudent();
+};
+
+// Click event for buttons with students
+choiceEl.addEventListener("click", (e) => {
+	// Function that scrolls up to the top of the page
+	scrollTo(0, 0);
+	if (e.target.tagName === "BUTTON") {
+		// Adding one on each guess
+		guesses++;
+		
+		let studentObj = {
+			name: currentStudent.name,
+		};
+
+		// If statement divides correct and incorrect answers
+		//
+		if (e.target.innerText === currentStudent.name) {
+			studentObj.correct = true;
+			correctChoice(studentObj);
+		} else {
+			studentObj.correct = false;
+			incorrectChoice(studentObj);
+		}
+
+		// Showing your result after 15 guesses
+		if (guesses === 15) {
+			showResult();
+			newRound();
+		}
+	}
+});
+
+
+
+const showResult = () => {
+	// This will check if you got a new highscore
+	if (correctAnswers > highscore) {
+		highscoreEl.innerHTML = `<p class="highscore display-6 text-secondary">Ditt nya rekord är: ${correctAnswers}</p>`;
+
+		highscore = correctAnswers;
+	} else {
+		highscoreEl.innerHTML = `<p class="highscore display-6 text-secondary">Inget nytt rekord den här rundan!</p>`;
+	}
+
+	// Will show you the result after guessing students
+	scoreEl.querySelector("span").textContent = `${correctAnswers}/${guesses}`;
+	scoreEl.classList.remove("d-none");
+	resultEl.innerText = "Vill du försöka igen?";
+	gameQuizEl.classList.add("d-none");
+};
+
+// Another round button resets all stats execpt highscore
+// This is the reset button that will reset everything in the quiz except the highscore
+const newRound = () => {
+	restartEl.classList.remove("d-none");
+	restartEl.addEventListener("click", () => {
+		highscoreEl.innerHTML = `<p class="highscore display-6 text-center text-secondary">Ditt nuvarande rekord är: ${highscore}</p>`;
+		scoreEl.classList.add("d-none");
+		resultEl.innerText = "";
+		guesses = 0;
+		correctAnswers = 0;
+		givenAnswers = [];
+		restartEl.classList.add("d-none");
+		gameQuizEl.classList.remove("d-none");
+		getStudent();
+	});
+};

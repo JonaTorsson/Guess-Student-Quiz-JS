@@ -1,16 +1,13 @@
-body{
-    background-color: bisque;
-	font-weight: 400;
-}
-
-
 h1{
     color: cadetblue;
 }
 
-/* button{
-    text-decoration: none;
-    border: none;
-    text-align: center;
-    background-color: blanchedalmond;
-} */
+.correct{
+    font-size: 5em;
+    color: green;
+}
+
+.wrong{
+    font-size: 5em;
+    color: darkred;
+}

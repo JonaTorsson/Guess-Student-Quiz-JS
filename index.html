@@ -8,36 +8,54 @@
     <!-- CSS styles -->
     <link rel="stylesheet" href="style.css">
 
-    <!-- Bootstrap 5.1 link -->
+    <!-- Bootstrap 5.1 länk -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
-    <title>Student quiz game</title>
+    <title>Klasskamrat Quiz</title>
 </head>
-<body class="bg-secondary">
-    <header>
-        <h1 class="text-center">Quiz game - Guess the student!</h1>
-        <p id="score" class="d-none">Score: <span class="display-2"></span></p>
+<body class="bg-dark">
+
+    <!-- HEADER -->
+    <header class="text-center">
+        <!-- Showing heading, points and highscore -->
+        <h1 class="">Quiz - Gissa klasskamraten</h1>
+
+        <p class="score display-2 d-none text-secondary">Poäng: <span class="display-2 text-center"></span></p>
         <p id="highscore"></p>
+
     </header>
 
+    <!-- MAIN -->
     <main class="container mt-5">
+        <!-- Section for hiscore, correct/wrong answer and try agian button -->
         <section class="text-center my-4">
-			<p class="result"></p>
-			<button class="btn d-none" id="restart">Restart game!</button>
+
+			<p class="text-secondary" id="result"></p>
+
+			<button class="btn btn-outline-warning d-none" id="restart">Starta om!</button>
+
 		</section>
-        <section class="">
-            <h2 class="text-center display-4">Guess the Student</h2>
-            <div class="d-flex justify-content-center">
+
+        <!-- Section for the Quiz -->
+        <section class="gameQuiz bg-success">
+
+            <h2 class="text-center display-4">Vem är det här?</h2>
+
+            <div class="d-flex justify-content-center imageHolder">
+
                 <img id="imgStudent" class="img-fluid" src="" alt="Profile picture on students">
-            </div>
-            <div id="choiceButton" class="d-flex flex-column justify-content-center flex-md-row my-3">
 
             </div>
-        </section>
-        <section>
+
+            <div class="choiceButton d-flex flex-column justify-content-center flex-md-row my-3"></div>
 
         </section>
             
     </main>
+
+    <!-- The creaters name and Email -->
+    <footer>
+        <span class="container d-flex justify-content-center text-secondary">Skapad av Jona Torsson | Jona.Torsson@gmail.com</span>
+    </footer>
     <script src="script.js"></script>
 </body>
 </html>
